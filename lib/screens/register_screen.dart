@@ -6,7 +6,8 @@ class RegisterScreen extends StatelessWidget {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
-  final TextEditingController _confirmaSenhaController = TextEditingController();
+  final TextEditingController _confirmaSenhaController =
+      TextEditingController();
   final TextEditingController _nomeController = TextEditingController();
 
   AuthService authService = AuthService();
@@ -50,14 +51,43 @@ class RegisterScreen extends StatelessWidget {
                     TextField(
                       obscureText: true,
                       controller: _confirmaSenhaController,
-                      decoration: const InputDecoration(hintText: 'Confirme sua senha'),
+                      decoration:
+                          const InputDecoration(hintText: 'Confirme sua senha'),
                     ),
                     const SizedBox(height: 16),
-                    ElevatedButton(onPressed: () {
-                      if(_senhaController.text == _confirmaSenhaController.text) {
-                        authService.cadastrarUsuario(email: email, Senha: Senha, nome: nome)
-                      }
-                    }, child: const Text('Cadastrar')),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_senhaController.text ==
+                            _confirmaSenhaController.text) {
+                          authService
+                              .cadastrarUsuario(
+                            email: _emailController.text,
+                            Senha: _senhaController.text,
+                            nome: _nomeController.text,
+                          )
+                              .then((String? erro) {
+                            if (erro != null) {
+                              final snackBar = SnackBar(
+                                content: Text(erro),
+                                backgroundColor: Colors.red,
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          });
+                        } else {
+                          const snackBar = SnackBar(
+                            content: Text('As senhas não correspondem'),
+                            backgroundColor: Colors.red,
+                          );
+
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      },
+                      child: const Text('Cadastrar'),
+                    ),
                     const SizedBox(height: 16),
                   ],
                 ),
