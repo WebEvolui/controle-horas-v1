@@ -1,4 +1,5 @@
-# horas_v3
+# Gerenciador de Horas - Part 1 
+v1
 
 Um projeto para gerenciar a nossas horas
 
