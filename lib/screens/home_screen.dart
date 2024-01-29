@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-void setuptFCM() async {
+setuptFCM() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
 
@@ -266,14 +266,11 @@ void setuptFCM() async {
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
+    print('### já funciona Message data: ${message.data}');
 
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
     }
   });
 
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print('### A new onMessageOpenedApp event was published!');
-  });
 }
