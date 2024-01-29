@@ -11,6 +11,7 @@ import '../models/hour.dart';
 
 class HomeScreen extends StatefulWidget {
   final User user;
+  String titulo = 'Horas V3';
 
   HomeScreen({super.key, required this.user});
 
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: Menu(user: widget.user),
       appBar: AppBar(
-        title: const Text('Horas V3'),
+        title: Text(widget.titulo),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -227,15 +228,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> refresh() async {
-    // double total = 0;
+    double total = 0;
     List<Hour> temp = [];
 
     QuerySnapshot<Map<String, dynamic>> snapshot = await firestore.collection(widget.user.uid).get();
     for (var doc in snapshot.docs) {
       temp.add(Hour.fromMap(doc.data()));
+      total += doc.data()['minutos'];
     }
+
+    Duration horas = Duration(minutes: total.toInt());
+
     setState(() {
       listHours = temp;
+      widget.titulo = 'Horas V3 - Total: ${horas.inHours.toString()}h:${horas.inMinutes.remainder(60).toString().padLeft(2, '0')}';
     });
   }
 }
