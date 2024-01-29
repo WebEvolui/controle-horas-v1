@@ -25,14 +25,45 @@ class _PasswordresetModalState extends State<PasswordresetModal> {
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(labelText: 'Endereço de e-mail'),
           validator: (value) {
-            if(value!.isEmpty) {
-              return 'Por favor, informe um endereço de e-mail válido';
+            if (value!.isEmpty) {
+              return 'Informe um endereço de e-mail válido';
             }
             return null;
           },
         ),
-
       ),
+      actions: <TextButton>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              authService
+                  .redefinicaoSenha(email: _emailController.text)
+                  .then((String? erro) {
+                Navigator.of(context).pop();
+
+                if (erro != null) {
+                  final snackBar = SnackBar(
+                      content: Text(erro), backgroundColor: Colors.red);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                } else {
+                  final snackBar = SnackBar(
+                    content: Text(
+                        'Um link de redefinição de senha foi enviado para o seu e-mail: ${_emailController.text}'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              });
+            }
+          },
+          child: Text('Recuperar senha'),
+        )
+      ],
     );
   }
 }
