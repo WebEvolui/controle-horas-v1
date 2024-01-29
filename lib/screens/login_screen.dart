@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:horas_v3/screens/register_screen.dart';
+import 'package:horas_v3/screens/reset_password_modal.dart';
 
 import '../services/auth_service.dart';
 
@@ -44,14 +45,18 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        authService.entrarUsuario(email: _emailController.text,
-                            senha: _senhaController.text).then((String? erro) {
+                        authService
+                            .entrarUsuario(
+                                email: _emailController.text,
+                                senha: _senhaController.text)
+                            .then((String? erro) {
                           if (erro != null) {
-                            final snackBar = SnackBar(content: Text(erro),
+                            final snackBar = SnackBar(
+                                content: Text(erro),
                                 backgroundColor: Colors.red);
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           }
                         });
                       },
@@ -71,8 +76,18 @@ class LoginScreen extends StatelessWidget {
                               builder: (context) => RegisterScreen(),
                             ));
                       },
-                      child: const Text(
-                          'Ainda não tem uma conta, crie uma conta'),
+                      child:
+                          const Text('Ainda não tem uma conta, crie uma conta'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return PasswordresetModal();
+                            });
+                      },
+                      child: Text('Esqueceu sua senha?'),
                     )
                   ],
                 ),
