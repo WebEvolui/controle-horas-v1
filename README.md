@@ -1,3 +1,6 @@
+## ⚠️ **Atenção:** Este é um alerta importante!
+Veja o repo novo: https://github.com/WebEvolui/controle-horas-v2
+
 # Gerenciador de Horas - Part 1 
 v1
 
